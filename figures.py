@@ -91,14 +91,13 @@ df_hist_1yr['L2_FEES_MA'] = df_hist_1yr['L2_GAS_FEES'][::-1].rolling(ma_p).mean(
 df_hist_1yr['L1_FEES_USD_MA'] = df_hist_1yr['L1_GAS_FEES_USD'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
 df_hist_1yr['L2_FEES_USD_MA'] = df_hist_1yr['L2_GAS_FEES_USD'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
 
-df_hist_1yr['EST_FEES_SAVED'] = df_hist_1yr['EQUIVALENT_L1_TX_FEE'] - df_hist_1yr['L1_GAS_FEES']
+df_hist_1yr['EST_FEES_SAVED'] = df_hist_1yr['EQUIVALENT_L1_TX_FEE'] - df_hist_1yr['L2_GAS_FEES']
 df_hist_1yr['EST_FEES_SAVED_MA'] = df_hist_1yr['EST_FEES_SAVED'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
+df_hist_1yr['EST_FEES_SAVED_USD'] = df_hist_1yr['EST_FEES_SAVED'] * df_hist_1yr['ETH_PRICE']
+df_hist_1yr['EST_FEES_SAVED_USD_MA'] = df_hist_1yr['EST_FEES_SAVED_USD'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
 
 df_hist=df_hist_1yr.set_index('DT').join(df_hist_brg.set_index('DT'))
 df_hist['Date']=df_hist.index
-df_hist['NUM_BGUSERS_MA'] = df_hist['NUM_BGUSERS'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
-df_hist['NUM_BGTX_MA'] = df_hist['NUM_BGTX'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
-
 df_hist['NUM_BGUSERS_MA'] = df_hist['NUM_BGUSERS'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
 df_hist['NUM_BGTX_MA'] = df_hist['NUM_BGTX'][::-1].rolling(ma_p).mean()[::-1].replace(np.nan, 'None')
 
@@ -119,9 +118,12 @@ curr_users = df_hist.loc[:, ['NUM_USERS_MA']].iloc[:1, :].values[0][0]
 last_users = df_hist.loc[:, ['NUM_USERS_MA']].iloc[1:2, :].values[0][0]
 curr_users_delta = curr_users - last_users
 
-curr_l2fee = df_hist.loc[:, ['L2_FEES_MA']].iloc[:1, :].values[0][0]
 curr_fee_saved = df_hist.loc[:, ['EST_FEES_SAVED_MA']].iloc[:1, :].values[0][0]
-curr_mul_saving = curr_fee_saved / curr_l2fee
+
+curr_brgers = df_hist.loc[:, ['NUM_BGUSERS_MA']].iloc[:1, :].values[0][0]
+last_brgers = df_hist.loc[:, ['NUM_BGUSERS_MA']].iloc[1:2, :].values[0][0]
+curr_brgers_delta = curr_brgers - last_brgers
+
 
 ## ------ PLOTS ----------
 # --> Total Active Contracts
@@ -162,13 +164,26 @@ fig_hist_ttlfee = px.line(df_hist, x='Date', y='TX_FEE_MA', labels ={'Date':'Dat
 fig_hist_ttlfee.add_bar(x=df_hist['Date'],y=df_hist['TX_FEE'], name="Total Fees (ETH)")
 chart_update_layout(fig_hist_ttlfee, "", "Total Transaction Fees per Day (ETH)")
 
-
 fig_hist_ttlfee_usd = px.line(df_hist, x='Date', y='TX_FEE_USD_MA', labels ={'Date':'Date', 'TX_FEE_USD_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'TX_FEE_USD_MA':True} )
 fig_hist_ttlfee_usd.add_bar(x=df_hist['Date'],y=df_hist['TX_FEE_USD'], name="Total Fees (USD)")
             #,marker_color='rgba(86, 232, 198, 0.8)')
 chart_update_layout(fig_hist_ttlfee_usd, "", "Total Transaction Fees per Day (USD)")
+
+# --> Estimated Fees Saved
+fig_hist_savedfee = px.line(df_hist, x='Date', y='EST_FEES_SAVED_MA', labels ={'Date':'Date', 'EST_FEES_SAVED_MA':'7-Day MA'}
+                ,color_discrete_sequence=['gray']
+                ,hover_data={'Date':False,'EST_FEES_SAVED_MA':True} )
+fig_hist_savedfee.add_bar(x=df_hist['Date'],y=df_hist['EST_FEES_SAVED'], name="Estimated Fees Saved (ETH)")
+chart_update_layout(fig_hist_savedfee, "", "Estimated Fees Saved (ETH)")
+
+fig_hist_savedfee_usd = px.line(df_hist, x='Date', y='EST_FEES_SAVED_USD_MA', labels ={'Date':'Date', 'EST_FEES_SAVED_USD_MA':'7-Day MA'}
+                ,color_discrete_sequence=['gray']
+                ,hover_data={'Date':False,'EST_FEES_SAVED_USD_MA':True} )
+fig_hist_savedfee_usd.add_bar(x=df_hist['Date'],y=df_hist['EST_FEES_SAVED_USD'], name="Estimated Fees Saved (USD)")
+            #,marker_color='rgba(86, 232, 198, 0.8)')
+chart_update_layout(fig_hist_savedfee_usd, "", "Estimated Fees Saved (USD)")
 
 # --> Total L1 Fee (ETH / USD)
 fig_hist_l1fee = px.line(df_hist, x='Date', y='L1_FEES_MA', labels ={'Date':'Date', 'L1_FEES_MA':'7-Day MA'}
