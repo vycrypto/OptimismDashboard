@@ -126,11 +126,14 @@ curr_brgers_delta = curr_brgers - last_brgers
 
 
 ## ------ PLOTS ----------
+#colors : green: rgba(125,239,161,255); yellow: rgba(255,209,106,255); blue: rgba(131,201,255,255); pink: rgba(255,171,171,255)
+
 # --> Total Active Contracts
 fig_dev_act = px.line(df_Dev, x='DT', y='NUM_CONTRACTS_ACTIVE_MA', labels ={'DT':'Date', 'NUM_CONTRACTS_ACTIVE_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'DT':False,'NUM_CONTRACTS_ACTIVE_MA':True} )
-fig_dev_act.add_bar(x=df_Dev['DT'],y=df_Dev['NUM_CONTRACTS_ACTIVE'], name="# Active Contracts / Day")
+fig_dev_act.add_bar(x=df_Dev['DT'],y=df_Dev['NUM_CONTRACTS_ACTIVE'], name="# Active Contracts / Day"
+                    ,marker_color='rgba(255,171,171,255)')
 chart_update_layout(fig_dev_act, "", "Number of Active Contracts / Day")
 
 fig_dev_act_brkdwn = px.bar(df_Dev_BrkDwn, x='DT', y='NUM_CONTRACTS_ACTIVE', color='LABEL_TYPE'
@@ -147,74 +150,78 @@ chart_update_layout(fig_hist_prc, "", "OP Token Price (USD)")
 fig_hist_txs = px.line(df_hist, x='Date', y='NUM_TXS_MA', labels ={'Date':'Date', 'NUM_TXS_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'NUM_TXS_MA':True} )
-fig_hist_txs.add_bar(x=df_hist['Date'],y=df_hist['NUM_TXS'], name="# Transactions per Day")
+fig_hist_txs.add_bar(x=df_hist['Date'],y=df_hist['NUM_TXS'], name="# Transactions per Day"
+                     ,marker_color='rgba(255,171,171,255)')
 chart_update_layout(fig_hist_txs, "", "Number of Daily Transactions")
 
 # --> Total Users
 fig_hist_user = px.line(df_hist, x='Date', y='NUM_USERS_MA', labels ={'Date':'Date', 'NUM_USERS_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'NUM_USERS_MA':True} )
-fig_hist_user.add_bar(x=df_hist['Date'],y=df_hist['NUM_USERS'], name="# Users per Day")
+fig_hist_user.add_bar(x=df_hist['Date'],y=df_hist['NUM_USERS'], name="# Users per Day"
+                      ,marker_color='rgba(255,171,171,255)')
 chart_update_layout(fig_hist_user, "", "Number of Daily Unique Users")
 
 # --> Total Fee (ETH / USD)
 fig_hist_ttlfee = px.line(df_hist, x='Date', y='TX_FEE_MA', labels ={'Date':'Date', 'TX_FEE_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'TX_FEE_MA':True} )
-fig_hist_ttlfee.add_bar(x=df_hist['Date'],y=df_hist['TX_FEE'], name="Total Fees (ETH)")
+fig_hist_ttlfee.add_bar(x=df_hist['Date'],y=df_hist['TX_FEE'], name="Total Fees (ETH)"
+                        ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_ttlfee, "", "Total Transaction Fees per Day (ETH)")
 
 fig_hist_ttlfee_usd = px.line(df_hist, x='Date', y='TX_FEE_USD_MA', labels ={'Date':'Date', 'TX_FEE_USD_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'TX_FEE_USD_MA':True} )
-fig_hist_ttlfee_usd.add_bar(x=df_hist['Date'],y=df_hist['TX_FEE_USD'], name="Total Fees (USD)")
-            #,marker_color='rgba(86, 232, 198, 0.8)')
+fig_hist_ttlfee_usd.add_bar(x=df_hist['Date'],y=df_hist['TX_FEE_USD'], name="Total Fees (USD)"
+                            ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_ttlfee_usd, "", "Total Transaction Fees per Day (USD)")
 
 # --> Estimated Fees Saved
 fig_hist_savedfee = px.line(df_hist, x='Date', y='EST_FEES_SAVED_MA', labels ={'Date':'Date', 'EST_FEES_SAVED_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'EST_FEES_SAVED_MA':True} )
-fig_hist_savedfee.add_bar(x=df_hist['Date'],y=df_hist['EST_FEES_SAVED'], name="Estimated Fees Saved (ETH)")
+fig_hist_savedfee.add_bar(x=df_hist['Date'],y=df_hist['EST_FEES_SAVED'], name="Estimated Fees Saved (ETH)"
+                          , marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_savedfee, "", "Estimated Fees Saved (ETH)")
 
 fig_hist_savedfee_usd = px.line(df_hist, x='Date', y='EST_FEES_SAVED_USD_MA', labels ={'Date':'Date', 'EST_FEES_SAVED_USD_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'EST_FEES_SAVED_USD_MA':True} )
-fig_hist_savedfee_usd.add_bar(x=df_hist['Date'],y=df_hist['EST_FEES_SAVED_USD'], name="Estimated Fees Saved (USD)")
-            #,marker_color='rgba(86, 232, 198, 0.8)')
+fig_hist_savedfee_usd.add_bar(x=df_hist['Date'],y=df_hist['EST_FEES_SAVED_USD'], name="Estimated Fees Saved (USD)"
+                              ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_savedfee_usd, "", "Estimated Fees Saved (USD)")
 
 # --> Total L1 Fee (ETH / USD)
 fig_hist_l1fee = px.line(df_hist, x='Date', y='L1_FEES_MA', labels ={'Date':'Date', 'L1_FEES_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L1_FEES_MA':True} )
-fig_hist_l1fee.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_FEES'], name="L1 GAS Fees (ETH)")
-            #,marker_color='rgba(86, 157, 232, 0.8)')
+fig_hist_l1fee.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_FEES'], name="L1 GAS Fees (ETH)"
+                       ,marker_color='rgba(255,209,106,255)')
 chart_update_layout(fig_hist_l1fee, "", "L1 Transaction Fees per Day (ETH)")
 
 
 fig_hist_l1fee_usd = px.line(df_hist, x='Date', y='L1_FEES_USD_MA', labels ={'Date':'Date', 'L1_FEES_USD_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L1_FEES_USD_MA':True} )
-fig_hist_l1fee_usd.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_FEES_USD'], name="L1 GAS Fees (USD)")
-            #,marker_color='rgba(86, 157, 232, 0.8)')
+fig_hist_l1fee_usd.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_FEES_USD'], name="L1 GAS Fees (USD)"
+                           ,marker_color='rgba(255,209,106,255)')
 chart_update_layout(fig_hist_l1fee_usd, "", "L1 Transaction Fees per Day (USD)")
 
 # --> Total L2 Fee (ETH / USD)
 fig_hist_l2fee = px.line(df_hist, x='Date', y='L2_FEES_MA', labels ={'Date':'Date', 'L2_FEES_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L2_FEES_MA':True} )
-fig_hist_l2fee.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_FEES'], name="L2 GAS Fees (ETH)")
-            #,marker_color='rgba(47, 229, 87, 0.8)')
+fig_hist_l2fee.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_FEES'], name="L2 GAS Fees (ETH)"
+                       ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_l2fee, "", "L2 Transaction Fees per Day (ETH)")
 
 
 fig_hist_l2fee_usd = px.line(df_hist, x='Date', y='L2_FEES_USD_MA', labels ={'Date':'Date', 'L2_FEES_USD_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L2_FEES_USD_MA':True} )
-fig_hist_l2fee_usd.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_FEES_USD'], name="L2 GAS Fees (USD)")
-            #,marker_color='rgba(47, 229, 87, 0.8)')
+fig_hist_l2fee_usd.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_FEES_USD'], name="L2 GAS Fees (USD)"
+                           ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_l2fee_usd, "", "L2 Transaction Fees per Day (USD)")
 
 # --> Estimated Fee Saved
@@ -245,30 +252,30 @@ chart_update_layout(fig_hist_brg_deposit, "", "Number of Daily Unique Bridge Dep
 fig_hist_l1gas_prc = px.line(df_hist, x='Date', y='L1_GAS_PRC_GWEI_MA', labels ={'Date':'Date', 'L1_GAS_PRC_GWEI_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L1_GAS_PRC_GWEI_MA':True} )
-fig_hist_l1gas_prc.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_PRC_GWEI'], name="L1 Gas Price")
-            #,marker_color='rgba(86, 157, 232, 0.8)')
+fig_hist_l1gas_prc.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_PRC_GWEI'], name="L1 Gas Price"
+                           ,marker_color='rgba(255,209,106,255)')
 chart_update_layout(fig_hist_l1gas_prc, "", "L1 Gas Price (gwei)")
 
 fig_hist_l2gas_prc = px.line(df_hist, x='Date', y='L2_GAS_PRC_GWEI_MA', labels ={'Date':'Date', 'L2_GAS_PRC_GWEI_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L2_GAS_PRC_GWEI_MA':True} )
-fig_hist_l2gas_prc.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_PRC_GWEI'], name="L2 Gas Price")
-            #,marker_color='rgba(47, 229, 87, 0.8)')
+fig_hist_l2gas_prc.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_PRC_GWEI'], name="L2 Gas Price"
+                           ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_l2gas_prc, "", "L2 Gas Price (gwei)")
 
 # --># of Gas Used: l1 vs. l2
 fig_hist_l1gas_used = px.line(df_hist, x='Date', y='L1_GAS_USED_MA', labels ={'Date':'Date', 'L1_GAS_USED_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L1_GAS_USED_MA':True} )
-fig_hist_l1gas_used.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_USED'], name="L1 Gas Used")
-            #,marker_color='rgba(86, 157, 232, 0.8)')
+fig_hist_l1gas_used.add_bar(x=df_hist['Date'],y=df_hist['L1_GAS_USED'], name="L1 Gas Used"
+                            ,marker_color='rgba(255,209,106,255)')
 chart_update_layout(fig_hist_l1gas_used, "", "L1 Gas Used")
 
 fig_hist_l2gas_used = px.line(df_hist, x='Date', y='L2_GAS_USED_MA', labels ={'Date':'Date', 'L2_GAS_USED_MA':'7-Day MA'}
                 ,color_discrete_sequence=['gray']
                 ,hover_data={'Date':False,'L2_GAS_USED_MA':True} )
-fig_hist_l2gas_used.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_USED'], name="L2 Gas Used")
-            #,marker_color='rgba(47, 229, 87, 0.8)')
+fig_hist_l2gas_used.add_bar(x=df_hist['Date'],y=df_hist['L2_GAS_USED'], name="L2 Gas Used"
+                            ,marker_color='rgba(131,201,255,255)')
 chart_update_layout(fig_hist_l2gas_used, "", "L2 Gas Used")
 
 
